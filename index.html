@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ResearchPulse — AI & ML Research Tracker</title>
+  <meta name="description" content="Stay up-to-date with the latest AI and Machine Learning research papers from arXiv. Auto-summarized, curated daily." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-grid"></div>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" stroke="url(#grad1)" stroke-width="2"/>
+            <path d="M8 16 L16 8 L24 16 L16 24 Z" fill="url(#grad2)" opacity="0.8"/>
+            <circle cx="16" cy="16" r="4" fill="url(#grad1)"/>
+            <defs>
+              <linearGradient id="grad1" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#818cf8"/>
+                <stop offset="100%" stop-color="#c084fc"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">ResearchPulse</span>
+          <span class="logo-tagline">AI &amp; ML Papers</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-category="all" id="tab-all">All Fields</button>
+        <button class="nav-tab" data-category="cs.AI" id="tab-ai">Artificial Intelligence</button>
+        <button class="nav-tab" data-category="cs.LG" id="tab-lg">Machine Learning</button>
+        <button class="nav-tab" data-category="cs.CV" id="tab-cv">Computer Vision</button>
+        <button class="nav-tab" data-category="cs.CL" id="tab-cl">NLP</button>
+        <button class="nav-tab" data-category="stat.ML" id="tab-stat">Stats &amp; ML</button>
+      </nav>
+
+      <button class="refresh-btn" id="refreshBtn" title="Refresh papers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 4v6h-6M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+        </svg>
+        <span>Refresh</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>Live from arXiv</span>
+      </div>
+      <h1 class="hero-title">
+        Stay ahead of the<br />
+        <span class="gradient-text">AI Research Frontier</span>
+      </h1>
+      <p class="hero-subtitle">
+        The top 15 most recent AI &amp; ML papers from arXiv — auto-fetched and summarized in real time.
+        Updated daily so you never miss a breakthrough.
+      </p>
+
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search papers, authors, topics…" autocomplete="off" />
+        <div class="search-shortcut">⌘K</div>
+      </div>
+
+      <div class="hero-stats" id="heroStats">
+        <div class="stat-item">
+          <span class="stat-value" id="statCount">—</span>
+          <span class="stat-label">Papers Loaded</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-value" id="statDate">—</span>
+          <span class="stat-label">Last Updated</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-value">arXiv</span>
+          <span class="stat-label">Source</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="main-container">
+
+    <!-- Sort & Filter Bar -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <span class="toolbar-label">Showing</span>
+        <span class="paper-count" id="paperCount">loading…</span>
+      </div>
+      <div class="toolbar-right">
+        <div class="sort-group">
+          <label class="sort-label">Sort by</label>
+          <select class="sort-select" id="sortSelect">
+            <option value="date">Latest First</option>
+            <option value="relevance">Most Relevant</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" id="loadingState">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring spinner-ring-2"></div>
+        <div class="spinner-ring spinner-ring-3"></div>
+      </div>
+      <p class="loading-text">Fetching latest research from arXiv…</p>
+      <p class="loading-sub">Connecting to the research frontier</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state hidden" id="errorState">
+      <div class="error-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="m15 9-6 6M9 9l6 6"/>
+        </svg>
+      </div>
+      <h3>Failed to fetch papers</h3>
+      <p id="errorMsg">Unable to reach arXiv API. Please check your connection.</p>
+      <button class="retry-btn" id="retryBtn">Try Again</button>
+    </div>
+
+    <!-- Papers Grid -->
+    <div class="papers-grid hidden" id="papersGrid"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state hidden" id="emptyState">
+      <div class="empty-icon">🔍</div>
+      <h3>No papers found</h3>
+      <p>Try adjusting your search or changing the category filter.</p>
+    </div>
+
+  </main>
+
+  <!-- Paper Detail Modal -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="modal-content" id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>Data sourced from <a href="https://arxiv.org" target="_blank" rel="noopener">arXiv.org</a> via the open API. No API key required.</p>
+      <p class="footer-sub">Built with ❤️ for the research community · Updates on every page load</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
